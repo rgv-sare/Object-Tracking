@@ -1,11 +1,22 @@
 import cv2
+import serial
+
 
 def drawBox(img, bbox):
     x, y, w, h = int(bbox[0]), int(bbox[1]), int(bbox[2]), int(bbox[3])
-    print(f"x: {x}, y: {y}, w: {w}, h: {h}")
+    print(bbox)
     cv2.rectangle(img, (x, y), ((x+w), (y+h)), (255, 0, 255), 3, 1)
     cv2.putText(img, "Tracking", (75, 75), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
+    send_data(bbox)
+    
+def send_data(data):
+    '''Convert the 4-tuple into a comma-sep string'''
+    data_str = ','.join(map(str, data)) + '\n'  # Convert tuple to comma-separated string
+    ser.write(data_str.encode())  # Send data as bytes
+   
 
+# open serial port
+ser = serial.Serial('/dev/ttyUSB0', 9600)   
 
 # keep width and height at 640, 480, for faster response
 cap = cv2.VideoCapture('''nvarguscamerasrc ! video/x-raw(memory:NVMM), 

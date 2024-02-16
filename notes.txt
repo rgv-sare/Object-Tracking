@@ -1,0 +1,19 @@
+Needed packages for object tracking:
+    Install OpenCV using link; 
+
+to test the camera on terminal, should return live video:
+gst-launch-1.0 nvarguscamerasrc ! 'video/x-raw(memory:NVMM), width=640, height=480, format=(string)NV12, framerate=(fraction)30/1' ! nvvidconv ! xvimagesink -e
+
+To find port for Arduino:
+    Do "lsusb" without Arduino, then repeat after plugging arduino into USB port.
+    You should see "QinHeng Electronics HL-340 USB-Serial adapter" as an added port
+    now do "ls /dev/tty*", you should see one named "/dev/ttyUSB0"
+        the 0 could be some other number, depending on actual port
+    use this port address for python
+
+Needed packages for python-arduino communication:
+    pip3 install pyserial for python
+
+To run python file:
+    must give USB port permission by doing: sudo chmod a+rw /dev/ttyUSB0
+    
