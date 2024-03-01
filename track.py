@@ -1,6 +1,10 @@
 import cv2
 import serial
+import os
+import time
 
+# to give jetson permission for Arduino USB port
+os.system('echo mule123 | sudo -S chmod a+rw /dev/ttyUSB0')
 
 def drawBox(img, bbox):
     x, y, w, h = int(bbox[0]), int(bbox[1]), int(bbox[2]), int(bbox[3])
@@ -14,10 +18,10 @@ def send_data(data):
     data_str = ','.join(map(str, data)) + '\n'  # Convert tuple to comma-separated string
     ser.write(data_str.encode())  # Send data as bytes
    
-
 # open serial port
-ser = serial.Serial('/dev/ttyUSB0', 9600)   
-
+ser = serial.Serial('/dev/ttyUSB0', 9600)
+# reset camera to default pos. before capture
+time.sleep(4)
 # keep width and height at 640, 480, for faster response
 cap = cv2.VideoCapture('''nvarguscamerasrc ! video/x-raw(memory:NVMM), 
 width=640, height=480, format=(string)NV12, framerate=(fraction)21/1 
